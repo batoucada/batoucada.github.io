@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UNJAM - Sliding Puzzle Game</title>
+    <link rel="icon" type="image/png" href="playstore-icon.png">
     <meta name="description" content="UNJAM is a sliding puzzle game inspired by Rush Hour. Drag vehicles on a 6x6 grid to free the red car. 100 puzzles across 5 difficulty levels.">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -30,6 +31,10 @@
         }
         nav .logo {
             font-size: 1.25rem; font-weight: 800; letter-spacing: 0.15em;
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+        nav .logo img {
+            width: 32px; height: 32px; border-radius: 6px;
         }
         nav .logo span { color: #777799; }
         nav .links { display: flex; gap: 1.5rem; font-size: 0.9rem; }
@@ -191,7 +196,7 @@
 <body>
 
 <nav>
-    <div class="logo"><span>UN</span>JAM</div>
+    <div class="logo"><img src="playstore-icon.png" alt="UNJAM icon"><span>UN</span>JAM</div>
     <div class="links">
         <a href="#features">Features</a>
         <a href="privacy/">Privacy</a>

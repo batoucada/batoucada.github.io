@@ -135,17 +135,14 @@
       width: 64px;
       height: 64px;
       border-radius: 14px;
-      background: linear-gradient(135deg, var(--color-red), #c0392b);
-      display: flex;
-      align-items: center;
-      justify-content: center;
       flex-shrink: 0;
+      overflow: hidden;
     }
 
-    .app-icon svg {
-      width: 32px;
-      height: 32px;
-      fill: #fff;
+    .app-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
     .app-card-header h2 {
@@ -278,7 +275,7 @@
       <div class="app-card">
         <div class="app-card-header">
           <div class="app-icon">
-            <svg viewBox="0 0 24 24"><path d="M5 3a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H5zm3 6h8a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1z"/></svg>
+            <img src="unjam/playstore-icon.png" alt="UNJAM icon">
           </div>
           <div>
             <h2>UNJAM</h2>
