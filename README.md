@@ -1,6 +1,6 @@
 # batoucada.github.io
 
-GitHub Pages site for [Batoucada](https://play.google.com/store/apps/developer?id=Batoucada), an independent Android app developer.
+GitHub Pages site for [Batoucada](https://play.google.com/store/apps/dev?id=8910487275154620203), an independent Android app developer.
 
 ## Apps
 
