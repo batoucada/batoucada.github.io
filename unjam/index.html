@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNJAM - Sliding Puzzle Game</title>
+    <meta name="description" content="UNJAM is a sliding puzzle game inspired by Rush Hour. Drag vehicles on a 6x6 grid to free the red car. 100 puzzles across 5 difficulty levels.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #05050C;
+            color: #fff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a { color: #E94560; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        /* Nav */
+        nav {
+            position: fixed; top: 0; width: 100%; z-index: 100;
+            background: rgba(5, 5, 12, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(233, 69, 96, 0.15);
+            padding: 1rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        nav .logo {
+            font-size: 1.25rem; font-weight: 800; letter-spacing: 0.15em;
+        }
+        nav .logo span { color: #777799; }
+        nav .links { display: flex; gap: 1.5rem; font-size: 0.9rem; }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center;
+            padding: 6rem 2rem 4rem;
+            position: relative;
+        }
+        .hero::before {
+            content: '';
+            position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(233, 69, 96, 0.12) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .hero h1 {
+            font-size: clamp(3rem, 10vw, 6rem);
+            font-weight: 900;
+            letter-spacing: 0.2em;
+            margin-bottom: 0.5rem;
+        }
+        .hero h1 .accent { color: #E94560; }
+        .hero p.tagline {
+            font-size: 1.25rem;
+            color: #777799;
+            max-width: 500px;
+            margin-bottom: 2.5rem;
+        }
+
+        /* Grid animation */
+        .grid-demo {
+            width: 240px; height: 240px;
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            grid-template-rows: repeat(6, 1fr);
+            gap: 3px;
+            background: #1A1A2E;
+            border-radius: 12px;
+            padding: 8px;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        .grid-demo .cell {
+            background: #16162A;
+            border-radius: 4px;
+        }
+        .grid-demo .car {
+            position: absolute;
+            border-radius: 6px;
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .grid-demo .car.red {
+            background: linear-gradient(135deg, #E94560, #C42040);
+            width: calc((100% - 16px) / 6 * 2 + 3px);
+            height: calc((100% - 16px) / 6 - 1px);
+            top: calc(8px + (100% - 16px) / 6 * 2 + 3px * 2);
+            left: calc(8px + (100% - 16px) / 6 * 0);
+        }
+        .grid-demo .car.red.solved {
+            transform: translateX(calc((100% - 16px) / 6 * 4 + 3px * 3.6));
+        }
+        .grid-demo .car.blue {
+            background: linear-gradient(135deg, #4560E9, #2040C4);
+            width: calc((100% - 16px) / 6 - 1px);
+            height: calc((100% - 16px) / 6 * 3 + 3px * 2);
+            top: calc(8px);
+            left: calc(8px + ((100% - 16px) / 6 + 3px) * 2);
+        }
+        .grid-demo .car.blue.solved {
+            transform: translateY(calc((100% - 16px) / 6 * 2 + 3px * 2));
+        }
+        .grid-demo .car.green {
+            background: linear-gradient(135deg, #45E960, #20C440);
+            width: calc((100% - 16px) / 6 * 2 + 3px);
+            height: calc((100% - 16px) / 6 - 1px);
+            top: calc(8px + ((100% - 16px) / 6 + 3px) * 4);
+            left: calc(8px + ((100% - 16px) / 6 + 3px) * 1);
+        }
+        .grid-demo .car.green.solved {
+            transform: translateX(calc((100% - 16px) / 6 * -1 - 3px));
+        }
+
+        /* CTA button */
+        .cta {
+            display: inline-flex; align-items: center; gap: 0.75rem;
+            background: #E94560;
+            color: #fff;
+            padding: 0.9rem 2rem;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 24px rgba(233, 69, 96, 0.3);
+        }
+        .cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(233, 69, 96, 0.45);
+            text-decoration: none;
+        }
+        .cta svg { width: 24px; height: 24px; }
+
+        /* Features */
+        .features {
+            padding: 4rem 2rem 6rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .features h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 3rem;
+            letter-spacing: 0.05em;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        .feature-card {
+            background: #0A0A16;
+            border: 1px solid rgba(233, 69, 96, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        .feature-card .icon {
+            font-size: 1.75rem;
+            margin-bottom: 0.75rem;
+        }
+        .feature-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+        .feature-card p {
+            color: #777799;
+            font-size: 0.9rem;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid rgba(233, 69, 96, 0.1);
+            padding: 2rem;
+            text-align: center;
+            color: #777799;
+            font-size: 0.85rem;
+        }
+        footer .links { margin-top: 0.5rem; }
+        footer .links a { margin: 0 0.75rem; }
+
+        @media (max-width: 600px) {
+            nav { padding: 0.75rem 1rem; }
+            .features { padding: 3rem 1rem 4rem; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="logo"><span>UN</span>JAM</div>
+    <div class="links">
+        <a href="#features">Features</a>
+        <a href="privacy/">Privacy</a>
+    </div>
+</nav>
+
+<section class="hero">
+    <div class="grid-demo" id="gridDemo">
+        <!-- 6x6 background cells -->
+        <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+        <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+        <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+        <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+        <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+        <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+        <!-- Cars -->
+        <div class="car red" id="redCar"></div>
+        <div class="car blue" id="blueCar"></div>
+        <div class="car green" id="greenCar"></div>
+    </div>
+    <h1><span class="accent">UN</span>JAM</h1>
+    <p class="tagline">A sliding puzzle game inspired by Rush Hour. Free the red car in as few moves as possible.</p>
+    <a class="cta" href="https://play.google.com/store/apps/details?id=fr.batoucada.unjam.app">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3.609 1.814L13.792 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .609-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.199l2.302 2.302a1 1 0 0 1 0 1.38l-2.302 2.302L15.196 12l2.502-2.492zM5.864 2.658L16.8 8.99l-2.302 2.302-8.634-8.634z"/></svg>
+        Get it on Google Play
+    </a>
+</section>
+
+<section class="features" id="features">
+    <h2>Features</h2>
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="icon">&#x1F9E9;</div>
+            <h3>100 Puzzles</h3>
+            <p>5 difficulty levels from Beginner to Expert. Unlock new challenges as you progress.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon">&#x1F3AF;</div>
+            <h3>Drag &amp; Drop</h3>
+            <p>Smooth, intuitive controls with spring animations and real-time collision detection.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon">&#x1F4A1;</div>
+            <h3>Smart Hints</h3>
+            <p>Stuck? The built-in BFS solver finds the optimal solution instantly.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon">&#x2B50;</div>
+            <h3>3-Star Rating</h3>
+            <p>Solve puzzles in fewer moves to earn stars and track your best scores.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon">&#x21A9;&#xFE0F;</div>
+            <h3>Undo &amp; Reset</h3>
+            <p>Made a wrong move? Undo up to 50 moves or reset the puzzle entirely.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon">&#x1F3C6;</div>
+            <h3>Player Profile</h3>
+            <p>Track your stats, completion rate, and overall progress across all levels.</p>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <p>&copy; 2025 Batoucada. All rights reserved.</p>
+    <div class="links">
+        <a href="privacy/">Privacy Policy</a>
+    </div>
+</footer>
+
+<script>
+    // Simple solve animation loop
+    const cars = document.querySelectorAll('.car');
+    let solved = false;
+    setInterval(() => {
+        solved = !solved;
+        cars.forEach(car => car.classList.toggle('solved', solved));
+    }, 2500);
+</script>
+
+</body>
+</html>
