@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kino &mdash; Fly your Parrot Airborne MiniDrone</title>
+  <link rel="icon" type="image/svg+xml" href="icon.svg" />
+  <meta name="description" content="A lightweight, open-source Android controller for Parrot Airborne MiniDrones. Direct BLE control, no ads, no tracking, works on 64-bit devices." />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --night: #0B0E14;
+      --surface: #161B26;
+      --surface-2: #222939;
+      --cyan: #4DD0E1;
+      --cyan-pale: #B2EBF2;
+      --amber: #FFB74D;
+      --red: #E53935;
+      --text: #E3E7EF;
+      --text-muted: #8A93A6;
+      --radius: 14px;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--night);
+      color: var(--text);
+      line-height: 1.65;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Nav */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 28px;
+      background: rgba(11, 14, 20, 0.82);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--surface-2);
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 1.2rem; font-weight: 700; letter-spacing: 2px;
+      color: var(--text); text-decoration: none;
+    }
+    .nav-logo img { width: 30px; height: 30px; }
+    .nav-links { display: flex; gap: 24px; }
+    .nav-links a {
+      color: var(--text-muted); text-decoration: none; font-size: 0.92rem; font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--cyan); }
+
+    /* Hero */
+    .hero {
+      min-height: 100vh; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; text-align: center;
+      padding: 110px 24px 70px;
+      background: radial-gradient(ellipse at 50% 42%, rgba(77, 208, 225, 0.13) 0%, transparent 62%);
+    }
+    .hero img.mark { width: 132px; height: 132px; margin-bottom: 26px; }
+    .hero h1 {
+      font-size: 3.4rem; font-weight: 800; letter-spacing: 14px;
+      text-indent: 14px; /* offset the trailing letter-space so it reads centred */
+      color: var(--text);
+    }
+    .hero .tagline {
+      font-size: 1.15rem; color: var(--cyan); margin-top: 12px;
+    }
+    .hero .sub {
+      font-size: 1rem; color: var(--text-muted); max-width: 520px; margin: 14px auto 36px;
+    }
+    .cta-row { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+    .cta {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 13px 28px; border-radius: 50px;
+      font-weight: 650; font-size: 0.98rem; text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+    }
+    .cta.primary {
+      background: var(--cyan); color: #00272C;
+      box-shadow: 0 4px 22px rgba(77, 208, 225, 0.26);
+    }
+    .cta.primary:hover { transform: translateY(-2px); box-shadow: 0 6px 30px rgba(77, 208, 225, 0.4); }
+    .cta.ghost {
+      border: 1px solid var(--surface-2); color: var(--text);
+    }
+    .cta.ghost:hover { background: var(--surface); transform: translateY(-2px); }
+
+    /* Sections */
+    section.band { max-width: 940px; margin: 0 auto; padding: 84px 24px; }
+    section.band h2 {
+      font-size: 1.9rem; font-weight: 750; text-align: center; margin-bottom: 12px;
+    }
+    section.band .lede {
+      text-align: center; color: var(--text-muted); max-width: 620px; margin: 0 auto 46px;
+    }
+
+    .features-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 18px;
+    }
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--surface-2);
+      border-radius: var(--radius);
+      padding: 24px;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .feature-card:hover { transform: translateY(-3px); border-color: var(--cyan); }
+    .feature-card .icon { font-size: 1.7rem; margin-bottom: 10px; }
+    .feature-card h3 { font-size: 1.03rem; margin-bottom: 6px; }
+    .feature-card p { font-size: 0.9rem; color: var(--text-muted); }
+
+    /* Compatibility */
+    .compat {
+      background: var(--surface); border: 1px solid var(--surface-2);
+      border-radius: var(--radius); padding: 8px 24px;
+    }
+    .compat dl { display: grid; grid-template-columns: 190px 1fr; gap: 0; }
+    .compat dt, .compat dd {
+      padding: 14px 0; border-bottom: 1px solid var(--surface-2); font-size: 0.94rem;
+    }
+    .compat dt { color: var(--text-muted); }
+    .compat dl > :nth-last-child(1), .compat dl > :nth-last-child(2) { border-bottom: none; }
+
+    /* Safety */
+    .safety {
+      border: 1px solid rgba(229, 57, 53, 0.4);
+      background: rgba(229, 57, 53, 0.07);
+      border-radius: var(--radius);
+      padding: 22px 24px;
+      max-width: 940px; margin: 0 auto 84px;
+    }
+    .safety h3 { font-size: 1rem; color: var(--amber); margin-bottom: 8px; }
+    .safety p { font-size: 0.9rem; color: var(--text-muted); }
+
+    /* Footer */
+    footer {
+      text-align: center; padding: 34px 24px;
+      color: var(--text-muted); font-size: 0.84rem;
+      border-top: 1px solid var(--surface-2);
+    }
+    footer a { color: var(--cyan); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 640px) {
+      .hero h1 { font-size: 2.3rem; letter-spacing: 8px; text-indent: 8px; }
+      .hero .tagline { font-size: 1rem; }
+      nav { padding: 12px 16px; }
+      .nav-logo .wordmark { display: none; }
+      .compat dl { grid-template-columns: 1fr; }
+      .compat dt { padding-bottom: 0; border-bottom: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="./" class="nav-logo">
+      <img src="icon.svg" alt="Kino icon" /><span class="wordmark">KINO</span>
+    </a>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#compatibility">Compatibility</a>
+      <a href="privacy/">Privacy</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <img class="mark" src="icon.svg" alt="" />
+    <h1>KINO</h1>
+    <p class="tagline">Fly your Parrot Airborne MiniDrone.</p>
+    <p class="sub">
+      A lightweight, open-source Android controller that talks to the drone over Bluetooth LE
+      directly &mdash; so it still works on the 64-bit-only phones Parrot&rsquo;s own app has left behind.
+    </p>
+    <div class="cta-row">
+      <a href="https://github.com/batoucada/kino" class="cta primary">View on GitHub &rarr;</a>
+      <a href="privacy/" class="cta ghost">Privacy</a>
+    </div>
+  </section>
+
+  <section class="band" id="features">
+    <h2>What it does</h2>
+    <p class="lede">Everything you need to get a MiniDrone in the air, and nothing you don&rsquo;t.</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="icon">🛩️</div>
+        <h3>Full piloting HUD</h3>
+        <p>A full-bleed cockpit laid out after the FreeFlight Mini flight screen, with two analogue
+           sticks, take off / land, flat trim and a battery gauge.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">📡</div>
+        <h3>Direct BLE GATT</h3>
+        <p>No Parrot SDK, no NDK, no bundled <code>.so</code> files. Kino speaks the Airborne
+           protocol itself over Android&rsquo;s own Bluetooth stack.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">📱</div>
+        <h3>Works on modern phones</h3>
+        <p>Parrot&rsquo;s legacy SDK ships 32-bit-only binaries that 64-bit devices cannot load.
+           Kino has no such dependency.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">🔄</div>
+        <h3>Pre-programmed flips</h3>
+        <p>Arm a looping &mdash; front, back, left or right &mdash; then double-tap the cockpit to
+           fly it, exactly as the Airborne user guide describes.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">🎚️</div>
+        <h3>Tunable sticks</h3>
+        <p>Sensitivity, expo and inverted pitch shape stick travel on the phone, before it ever
+           becomes a command.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">🔒</div>
+        <h3>Nothing phones home</h3>
+        <p>No ads, no analytics, no accounts, no data collection. The app does not even hold the
+           internet permission.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="compatibility">
+    <h2>Compatibility</h2>
+    <p class="lede">Kino is an independent project and is not affiliated with or endorsed by Parrot.</p>
+    <div class="compat">
+      <dl>
+        <dt>Supported drones</dt>
+        <dd>Parrot Airborne Night (Blaze, Swat, Maclane), Airborne Cargo (Mars, Travis)
+            and Rolling Spider</dd>
+        <dt>Android version</dt>
+        <dd>8.0 (API 26) and above</dd>
+        <dt>Hardware needed</dt>
+        <dd>Bluetooth Low Energy, plus a physical MiniDrone &mdash; the app does nothing on its own</dd>
+        <dt>Permissions</dt>
+        <dd>Bluetooth scan and connect. On Android 11 and below the platform also demands a
+            location permission before it will run any BLE scan; Kino never derives your location
+            from it.</dd>
+        <dt>Licence</dt>
+        <dd>Apache 2.0 &mdash; source on <a href="https://github.com/batoucada/kino" style="color:var(--cyan)">GitHub</a></dd>
+      </dl>
+    </div>
+  </section>
+
+  <div class="safety">
+    <h3>⚠️ Fly responsibly</h3>
+    <p>A MiniDrone is a real aircraft with exposed rotors. Fly it in a clear space, away from
+       people, animals and obstacles, and follow the rules that apply where you are. The
+       <strong>Emergency</strong> control cuts the motors instantly &mdash; the drone will fall
+       where it is. Kino is provided as-is, without warranty; you fly at your own risk.</p>
+  </div>
+
+  <footer>
+    &copy; 2026 Batoucada. Apache 2.0. &middot;
+    <a href="privacy/">Privacy Policy</a> &middot;
+    <a href="https://github.com/batoucada/kino">GitHub</a>
+    <br /><br />
+    Parrot, Airborne, Rolling Spider and FreeFlight are trademarks of Parrot SA.
+    Kino is an unaffiliated third-party application.
+  </footer>
+
+</body>
+</html>

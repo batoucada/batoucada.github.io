@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy &mdash; Kino</title>
+  <link rel="icon" type="image/svg+xml" href="../icon.svg" />
+  <meta name="description" content="Privacy Policy for Kino, an Android controller for Parrot Airborne MiniDrones." />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --night: #0B0E14;
+      --surface: #161B26;
+      --surface-2: #222939;
+      --cyan: #4DD0E1;
+      --text: #E3E7EF;
+      --text-muted: #8A93A6;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--night);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 28px;
+      background: rgba(11, 14, 20, 0.82);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--surface-2);
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 1.2rem; font-weight: 700; letter-spacing: 2px;
+      color: var(--text); text-decoration: none;
+    }
+    .nav-logo img { width: 30px; height: 30px; }
+    .nav-links { display: flex; gap: 24px; }
+    .nav-links a {
+      color: var(--text-muted); text-decoration: none; font-size: 0.92rem; font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--cyan); }
+
+    main { max-width: 720px; margin: 0 auto; padding: 108px 24px 60px; }
+    h1 { font-size: 2.1rem; font-weight: 750; margin-bottom: 8px; }
+    .updated { font-size: 0.84rem; color: var(--text-muted); margin-bottom: 40px; }
+    h2 { font-size: 1.15rem; font-weight: 700; color: var(--cyan); margin: 36px 0 10px; }
+    p { color: var(--text-muted); margin-bottom: 14px; }
+    ul { color: var(--text-muted); margin: 0 0 14px 22px; }
+    li { margin-bottom: 6px; }
+    a { color: var(--cyan); }
+    strong { color: var(--text); font-weight: 650; }
+
+    footer {
+      text-align: center; padding: 32px 24px;
+      color: var(--text-muted); font-size: 0.84rem;
+      border-top: 1px solid var(--surface-2);
+    }
+    footer a { color: var(--cyan); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 600px) {
+      main { padding: 88px 16px 40px; }
+      h1 { font-size: 1.7rem; }
+      .nav-logo .wordmark { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="../" class="nav-logo">
+      <img src="../icon.svg" alt="Kino icon" /><span class="wordmark">KINO</span>
+    </a>
+    <div class="nav-links">
+      <a href="../">Home</a>
+      <a href="./">Privacy</a>
+    </div>
+  </nav>
+
+  <main>
+    <h1>Privacy Policy</h1>
+    <p class="updated">Last updated: August 2, 2026</p>
+
+    <p>Batoucada (&ldquo;we&rdquo;, &ldquo;us&rdquo;, or &ldquo;our&rdquo;) built Kino, an Android
+       controller for Parrot Airborne MiniDrones, as a free and open-source application. This page
+       explains what the app does and does not do with your information.</p>
+
+    <h2>Information we collect</h2>
+    <p><strong>None.</strong> Kino does not collect, store, transmit or share any personal data. It
+       has no analytics, no crash reporting, no advertising SDK, no cookies and no user accounts.
+       We have no servers and receive nothing from your device.</p>
+
+    <h2>No internet access</h2>
+    <p>Kino does not declare Android&rsquo;s <code>INTERNET</code> permission. The app is
+       technically incapable of sending anything off your device, over any network, to us or to
+       anyone else.</p>
+
+    <h2>Bluetooth</h2>
+    <p>Kino uses Bluetooth Low Energy for one purpose only: to find your drone and to fly it. It
+       requests two permissions on Android 12 and above:</p>
+    <ul>
+      <li><strong>Nearby devices (BLUETOOTH_SCAN)</strong> &mdash; to list drones in range. It is
+          declared with the <code>neverForLocation</code> flag, which tells Android that scan
+          results are not used to derive location.</li>
+      <li><strong>Nearby devices (BLUETOOTH_CONNECT)</strong> &mdash; to open a connection to the
+          drone you pick and send flight commands to it.</li>
+    </ul>
+    <p>Scan results are matched against Parrot advertising names, held in memory while the app is
+       running, and discarded when it closes. They are never recorded or transmitted.</p>
+
+    <h2>Location permission on older Android versions</h2>
+    <p>On Android 11 and below, the operating system refuses to perform <em>any</em> Bluetooth LE
+       scan unless the app also holds a location permission. This is a platform requirement, not
+       a choice on our part. Kino therefore declares <code>ACCESS_FINE_LOCATION</code> capped at
+       <code>maxSdkVersion=&quot;30&quot;</code>, so it is not even requested on Android 12 or
+       later. <strong>Kino never reads your location, and never derives it from scan results.</strong></p>
+
+    <h2>Data stored on your device</h2>
+    <p>Kino has no database and no saved files. Piloting preferences such as sensitivity, expo and
+       inverted pitch live only in memory for the duration of a session. Nothing persists after the
+       app is closed, so there is nothing to export or delete beyond uninstalling the app.</p>
+
+    <h2>Third-party services</h2>
+    <p>Kino integrates no third-party services or SDKs that collect user data. It communicates only
+       with the drone you connect it to.</p>
+
+    <h2>Children&rsquo;s privacy</h2>
+    <p>Kino is a tool for operating a real flying device and is not directed at children. We do not
+       knowingly collect information from anyone, of any age &mdash; because we collect nothing at
+       all.</p>
+
+    <h2>Changes to this policy</h2>
+    <p>We may update this Privacy Policy from time to time. Any changes will be posted on this page
+       with an updated revision date. We encourage you to review this page periodically.</p>
+
+    <h2>Contact us</h2>
+    <p>If you have any questions or suggestions about this Privacy Policy, contact us at
+       <a href="mailto:contact@batoucada.fr">contact@batoucada.fr</a>, or open an issue on
+       <a href="https://github.com/batoucada/kino">GitHub</a>.</p>
+  </main>
+
+  <footer>
+    &copy; 2026 Batoucada. Apache 2.0. &middot;
+    <a href="../">Home</a> &middot;
+    <a href="https://github.com/batoucada/kino">GitHub</a>
+    <br /><br />
+    Parrot, Airborne and Rolling Spider are trademarks of Parrot SA.
+    Kino is an unaffiliated third-party application.
+  </footer>
+
+</body>
+</html>
