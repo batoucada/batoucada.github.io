@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy &mdash; Ondara</title>
+  <link rel="icon" type="image/svg+xml" href="../icon.svg" />
+  <meta name="description" content="Privacy Policy for Ondara, an Android remote control for Sony network audio devices." />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --deep: #0B1116;
+      --surface: #131C22;
+      --border: #1F2A31;
+      --turquoise: #31D6BE;
+      --turquoise-pale: #8FEDE0;
+      --text: #E6EEF0;
+      --text-muted: #93AEB4;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--deep);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 28px;
+      background: rgba(11, 17, 22, 0.82);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 1.2rem; font-weight: 700; letter-spacing: 2px;
+      color: var(--text); text-decoration: none;
+    }
+    .nav-logo img { width: 30px; height: 30px; }
+    .nav-links { display: flex; gap: 24px; }
+    .nav-links a {
+      color: var(--text-muted); text-decoration: none; font-size: 0.92rem; font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--turquoise); }
+
+    main { max-width: 720px; margin: 0 auto; padding: 108px 24px 60px; }
+    h1 { font-size: 2.1rem; font-weight: 750; margin-bottom: 8px; }
+    .updated { font-size: 0.84rem; color: var(--text-muted); margin-bottom: 40px; }
+    h2 { font-size: 1.15rem; font-weight: 700; color: var(--turquoise); margin: 36px 0 10px; }
+    p { color: var(--text-muted); margin-bottom: 14px; }
+    ul { color: var(--text-muted); margin: 0 0 14px 22px; }
+    li { margin-bottom: 6px; }
+    a { color: var(--turquoise); }
+    strong { color: var(--text); font-weight: 650; }
+    code { color: var(--turquoise-pale); font-size: 0.9em; }
+
+    footer {
+      text-align: center; padding: 32px 24px;
+      color: var(--text-muted); font-size: 0.84rem;
+      border-top: 1px solid var(--border);
+    }
+    footer a { color: var(--turquoise); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 600px) {
+      main { padding: 88px 16px 40px; }
+      h1 { font-size: 1.7rem; }
+      .nav-logo .wordmark { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="../" class="nav-logo">
+      <img src="../icon.svg" alt="Ondara icon" /><span class="wordmark">ONDARA</span>
+    </a>
+    <div class="nav-links">
+      <a href="../">Home</a>
+      <a href="./">Privacy</a>
+    </div>
+  </nav>
+
+  <main>
+    <h1>Privacy Policy</h1>
+    <p class="updated">Last updated: August 3, 2026</p>
+
+    <p>Batoucada (&ldquo;we&rdquo;, &ldquo;us&rdquo;, or &ldquo;our&rdquo;) built Ondara, an Android
+       remote control for Sony network audio devices &mdash; wireless speakers and soundbars &mdash;
+       on your own local network. This page explains what the app does and does not do with your
+       information.</p>
+
+    <h2>Information we collect</h2>
+    <p><strong>None.</strong> Ondara does not collect, store, transmit or share any personal data. It
+       has no analytics, no crash reporting, no advertising SDK, no cookies and no user accounts.
+       We have no servers and receive nothing from your device.</p>
+
+    <h2>Network communication</h2>
+    <p>Ondara communicates only with the Sony audio devices on the local network your phone is
+       attached to, over the HTTP interface those devices expose themselves. It contacts no server on
+       the internet, and there is no server of ours for it to contact. Three Android permissions are
+       declared for this, all of them at the <code>normal</code> protection level, so none of them
+       prompts you:</p>
+    <ul>
+      <li><strong><code>INTERNET</code></strong> &mdash; Android requires this permission to open
+          <em>any</em> network socket, including one that never leaves your home network. It is used
+          only to reach your speaker at its address on your own network.</li>
+      <li><strong><code>ACCESS_NETWORK_STATE</code></strong> &mdash; to read which network the phone
+          is currently on and what its address range is, so discovery searches your actual local
+          network instead of a guessed one.</li>
+      <li><strong><code>CHANGE_WIFI_MULTICAST_STATE</code></strong>, declared with
+          <code>maxSdkVersion=&quot;33&quot;</code> &mdash; to hold a Wi-Fi multicast lock while
+          listening for the devices that announce themselves, which older Android versions require
+          before they will deliver those announcements. It is not requested at all on Android 14 or
+          later, where the platform manages the lock itself.</li>
+    </ul>
+    <p>Ondara also declares that it needs Wi-Fi hardware
+       (<code>android.hardware.wifi</code>), because every function of the app needs a local
+       network.</p>
+    <p><strong>Discovery scans your local network, and here is exactly what that means.</strong>
+       Ondara first listens for devices that announce their own presence. It then opens a
+       short-timeout connection to each address on your phone&rsquo;s own subnet, on a small set of
+       candidate ports, and asks anything that answers whether it is a Sony audio device. Addresses
+       that do not answer are discarded as the scan proceeds. The scan is bounded, can be cancelled
+       at any time, and looks at nothing beyond your own local network. Its results
+       <strong>stay in memory while the app is in use and are never recorded or transmitted</strong>
+       &mdash; the only thing kept is the list of devices described below.</p>
+
+    <h2>No location permission</h2>
+    <p>Ondara declares <strong>no location permission of any kind</strong> &mdash; not
+       <code>ACCESS_FINE_LOCATION</code>, not <code>ACCESS_COARSE_LOCATION</code>. It does not need
+       one: it looks for network addresses on the network you are already connected to, not for Wi-Fi
+       access points around you, and it is Wi-Fi access point scanning that Android gates behind
+       location. Ondara never reads, derives, stores or transmits your location.</p>
+
+    <h2>No authentication on the devices</h2>
+    <p>Worth saying plainly, because it is easy to assume otherwise: these Sony devices require no
+       password, token or pairing, and their local interface is plain HTTP with no encryption
+       available on any port we have observed. Anything on the same network can already change their
+       volume or switch them off. That is a property of the hardware and there is no Sony setting
+       that restricts it &mdash; Ondara has not secured anything that was not already open, and does
+       not claim to. No personal data is transmitted either way; what travels between the phone and
+       the speaker is a control command, such as a power state or a volume number, and only to an
+       address on your own network.</p>
+
+    <h2>Data stored on your device</h2>
+    <p>Ondara keeps one small database on the phone: the list of devices you have found, so the app
+       opens straight onto them instead of searching again. Each entry holds the device&rsquo;s
+       <strong>local</strong> IP address and port (for example <code>192.168.1.42:54480</code>), the
+       name the device reports on your own network, and whether it turned out to report a battery
+       level. Every one of those values is something your own network told the phone. It never leaves
+       your device, and it is deleted with the app or by clearing its data from Android settings.
+       There is nothing else stored, so there is nothing else to export or delete.</p>
+
+    <h2>Third-party services</h2>
+    <p>Ondara integrates no third-party service or SDK that collects user data. The libraries it uses
+       &mdash; AndroidX and Jetpack Compose, Hilt, Room, kotlinx.serialization and, for live updates
+       from the device, OkHttp &mdash; all run locally and none of them phones home. OkHttp is used
+       only to open a <code>ws://</code> connection to an address on your own network.</p>
+
+    <h2>Children&rsquo;s privacy</h2>
+    <p>Ondara is a remote control for a piece of home audio hardware and is not directed at children.
+       We do not knowingly collect information from anyone, of any age &mdash; because we collect
+       nothing at all.</p>
+
+    <h2>Changes to this policy</h2>
+    <p>We may update this Privacy Policy from time to time. Any changes will be posted on this page
+       with an updated revision date. We encourage you to review this page periodically.</p>
+
+    <h2>Contact us</h2>
+    <p>If you have any questions or suggestions about this Privacy Policy, do not hesitate to
+       contact us at <a href="mailto:contact@batoucada.fr">contact@batoucada.fr</a>.</p>
+  </main>
+
+  <footer>
+    &copy; 2026 Batoucada. All rights reserved. &middot;
+    <a href="../">Home</a>
+    <br /><br />
+    Sony, SongPal, DSEE HX and ClearAudio+ are trademarks of Sony Corporation.
+    Ondara is an independent third-party application with no affiliation with Sony.
+  </footer>
+
+</body>
+</html>

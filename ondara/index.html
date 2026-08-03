@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ondara &mdash; Control your Sony speakers over Wi-Fi</title>
+  <link rel="icon" type="image/svg+xml" href="icon.svg" />
+  <meta name="description" content="An Android remote control for Sony network audio devices. Finds speakers and soundbars on your own Wi-Fi and controls them directly. No cloud, no account, no tracking." />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --deep: #0B1116;
+      --surface: #131C22;
+      --border: #1F2A31;
+      --turquoise: #31D6BE;
+      --turquoise-pale: #8FEDE0;
+      --amber: #FFB74D;
+      --red: #E53935;
+      --text: #E6EEF0;
+      --text-muted: #93AEB4;
+      --radius: 14px;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--deep);
+      color: var(--text);
+      line-height: 1.65;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Nav */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 28px;
+      background: rgba(11, 17, 22, 0.82);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 1.2rem; font-weight: 700; letter-spacing: 2px;
+      color: var(--text); text-decoration: none;
+    }
+    .nav-logo img { width: 30px; height: 30px; }
+    .nav-links { display: flex; gap: 24px; }
+    .nav-links a {
+      color: var(--text-muted); text-decoration: none; font-size: 0.92rem; font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--turquoise); }
+
+    /* Hero */
+    .hero {
+      min-height: 100vh; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; text-align: center;
+      padding: 110px 24px 70px;
+      background: radial-gradient(ellipse at 50% 42%, rgba(49, 214, 190, 0.13) 0%, transparent 62%);
+    }
+    .hero img.mark { width: 132px; height: 132px; margin-bottom: 26px; }
+    .hero h1 {
+      font-size: 3.4rem; font-weight: 800; letter-spacing: 14px;
+      text-indent: 14px; /* offset the trailing letter-space so it reads centred */
+      color: var(--text);
+    }
+    .hero .tagline {
+      font-size: 1.15rem; color: var(--turquoise); margin-top: 12px;
+    }
+    .hero .sub {
+      font-size: 1rem; color: var(--text-muted); max-width: 540px; margin: 14px auto 36px;
+    }
+    .cta-row { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+    .cta {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 13px 28px; border-radius: 50px;
+      font-weight: 650; font-size: 0.98rem; text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+    }
+    .cta.primary {
+      background: var(--turquoise); color: #04231F;
+      box-shadow: 0 4px 22px rgba(49, 214, 190, 0.26);
+    }
+    .cta.primary:hover { transform: translateY(-2px); box-shadow: 0 6px 30px rgba(49, 214, 190, 0.4); }
+    .cta.ghost {
+      border: 1px solid var(--border); color: var(--text);
+    }
+    .cta.ghost:hover { background: var(--surface); transform: translateY(-2px); }
+
+    /* Sections */
+    section.band { max-width: 940px; margin: 0 auto; padding: 84px 24px; }
+    section.band h2 {
+      font-size: 1.9rem; font-weight: 750; text-align: center; margin-bottom: 12px;
+    }
+    section.band .lede {
+      text-align: center; color: var(--text-muted); max-width: 620px; margin: 0 auto 46px;
+    }
+
+    .features-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 18px;
+    }
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .feature-card:hover { transform: translateY(-3px); border-color: var(--turquoise); }
+    .feature-card .icon { font-size: 1.7rem; margin-bottom: 10px; }
+    .feature-card h3 { font-size: 1.03rem; margin-bottom: 6px; }
+    .feature-card p { font-size: 0.9rem; color: var(--text-muted); }
+    .feature-card code { color: var(--turquoise-pale); font-size: 0.86em; }
+
+    /* Compatibility */
+    .compat {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 8px 24px;
+    }
+    .compat dl { display: grid; grid-template-columns: 190px 1fr; gap: 0; }
+    .compat dt, .compat dd {
+      padding: 14px 0; border-bottom: 1px solid var(--border); font-size: 0.94rem;
+    }
+    .compat dt { color: var(--text-muted); }
+    .compat dd code { color: var(--turquoise-pale); font-size: 0.9em; }
+    .compat dl > :nth-last-child(1), .compat dl > :nth-last-child(2) { border-bottom: none; }
+
+    /* Note */
+    .note {
+      border: 1px solid rgba(229, 57, 53, 0.4);
+      background: rgba(229, 57, 53, 0.07);
+      border-radius: var(--radius);
+      padding: 22px 24px;
+      max-width: 940px; margin: 0 auto 84px;
+    }
+    .note h3 { font-size: 1rem; color: var(--amber); margin-bottom: 8px; }
+    .note p { font-size: 0.9rem; color: var(--text-muted); }
+    .note p + p { margin-top: 10px; }
+
+    /* Footer */
+    footer {
+      text-align: center; padding: 34px 24px;
+      color: var(--text-muted); font-size: 0.84rem;
+      border-top: 1px solid var(--border);
+    }
+    footer a { color: var(--turquoise); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 640px) {
+      .hero h1 { font-size: 2.3rem; letter-spacing: 8px; text-indent: 8px; }
+      .hero .tagline { font-size: 1rem; }
+      nav { padding: 12px 16px; }
+      .nav-logo .wordmark { display: none; }
+      .compat dl { grid-template-columns: 1fr; }
+      .compat dt { padding-bottom: 0; border-bottom: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="./" class="nav-logo">
+      <img src="icon.svg" alt="Ondara icon" /><span class="wordmark">ONDARA</span>
+    </a>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#compatibility">Compatibility</a>
+      <a href="privacy/">Privacy</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <img class="mark" src="icon.svg" alt="" />
+    <h1>ONDARA</h1>
+    <p class="tagline">Control your Sony speakers and soundbars over Wi-Fi.</p>
+    <p class="sub">
+      Ondara finds Sony network audio devices on the Wi-Fi network your phone is already on and
+      talks to them directly, phone to speaker &mdash; no cloud service, no account, no sign-in.
+    </p>
+    <div class="cta-row">
+      <a href="https://play.google.com/store/apps/details?id=fr.batoucada.ondara.app" class="cta primary">
+        Get it on Google Play &rarr;
+      </a>
+      <a href="privacy/" class="cta ghost">Privacy</a>
+    </div>
+  </section>
+
+  <section class="band" id="features">
+    <h2>What it does</h2>
+    <p class="lede">Every Sony model exposes a different set of features, so Ondara asks each device
+       what it supports and shows only that.</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="icon">🔍</div>
+        <h3>Finds your devices</h3>
+        <p>A fast pass listens for the devices that announce themselves, then a bounded, cancellable
+           check of the addresses on your own subnet catches the ones that do not. Whatever it finds
+           is remembered, so the next launch opens straight onto your speakers.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">🎛️</div>
+        <h3>Only the controls your device has</h3>
+        <p>Ondara reads each device&rsquo;s own description of itself before drawing anything. A
+           control the speaker in front of you cannot obey is not shown at all &mdash; not greyed
+           out, not present.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">🔊</div>
+        <h3>Volume from the device&rsquo;s own range</h3>
+        <p>Minimum, maximum and step come from the device itself rather than a guessed 0&ndash;50,
+           so the slider means what it says. Mute and power on / back to standby sit alongside it.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">🎚️</div>
+        <h3>Sound field and equaliser</h3>
+        <p>Sound field, DSEE HX and ClearAudio+ where the device offers them, listed in the device&rsquo;s
+           own words, plus the 5-band equaliser when it is on its custom sound field.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">🔋</div>
+        <h3>Battery, only when it is real</h3>
+        <p>Portable speakers that report a level get one. Devices that do not get no battery element
+           at all &mdash; and a level Ondara cannot read is shown as unknown, never as a guessed
+           number.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">🏠</div>
+        <h3>Sees your speaker groups</h3>
+        <p>If your devices are in a Google Cast group, Ondara shows the group, its members and which
+           device is currently leading it. Creating and editing groups stays in Google Home &mdash;
+           Ondara only reads.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="compatibility">
+    <h2>Compatibility</h2>
+    <p class="lede">Ondara is an independent project and is not affiliated with or endorsed by Sony.</p>
+    <div class="compat">
+      <dl>
+        <dt>Supported devices</dt>
+        <dd>Sony wireless speakers and soundbars that answer on the local network. Development
+            devices are the SRS-HG1 speaker and the HT-XT3 soundbar; not every model answers, and
+            firmware makes a difference, so run a scan before deciding</dd>
+        <dt>Android version</dt>
+        <dd>8.0 (API 26) and above</dd>
+        <dt>Network</dt>
+        <dd>Your phone and your speaker must be on the same Wi-Fi network. This cannot work over
+            mobile data, and Wi-Fi hardware is declared as required</dd>
+        <dt>Hardware needed</dt>
+        <dd>A Sony network audio device &mdash; the app does nothing on its own. With none on the
+            network it opens normally and reports that it found nothing</dd>
+        <dt>Permissions</dt>
+        <dd><code>INTERNET</code> and <code>ACCESS_NETWORK_STATE</code> to reach the device on your
+            own network, plus <code>CHANGE_WIFI_MULTICAST_STATE</code> on Android 13 and below for
+            the multicast lock discovery needs. <strong>No location permission of any kind</strong></dd>
+        <dt>Sony&rsquo;s own app</dt>
+        <dd>Not required to use Ondara, and Ondara is not a replacement for it</dd>
+      </dl>
+    </div>
+  </section>
+
+  <div class="note">
+    <h3>⚠️ What to expect</h3>
+    <p>The interface these devices expose is undocumented; Ondara was built by observing the
+       devices themselves. So it never assumes: every control is derived from what that particular
+       device declares about itself, and a device that declares nothing is asked for nothing. On a
+       model we have not seen, a command can still be refused &mdash; Ondara reports that rather
+       than pretending it worked.</p>
+    <p>These devices also have no authentication of any kind. Any app or computer on the same
+       network can already change their volume or switch them off; that is a property of the
+       hardware, not something Ondara introduces or can fix. Ondara is provided as is, without
+       warranty.</p>
+  </div>
+
+  <footer>
+    &copy; 2026 Batoucada. All rights reserved. &middot;
+    <a href="privacy/">Privacy Policy</a>
+    <br /><br />
+    Sony, SongPal, DSEE HX and ClearAudio+ are trademarks of Sony Corporation.
+    Ondara is an independent third-party application with no affiliation with Sony.
+  </footer>
+
+</body>
+</html>
