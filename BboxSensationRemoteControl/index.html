@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bbox Sensation Remote Controller</title>
+    <link rel="icon" type="image/png" href="images/ic_launcher_round_512px.png">
+    <meta name="description" content="Telecommande Android pour la Bbox TV de Bouygues Telecom via le WiFi. Volume, chaines, navigation et commandes multimedia depuis votre smartphone.">
     <style>
         :root {
             --primary: #3F51B5;
@@ -49,15 +51,30 @@
             margin: 0 auto 32px;
         }
 
-        .deprecated-banner {
-            display: inline-block;
-            background: #d32f2f;
-            color: white;
-            padding: 10px 24px;
-            border-radius: 6px;
-            font-size: 1rem;
+        .cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: white;
+            color: var(--primary-dark);
+            padding: 14px 30px;
+            border-radius: 50px;
+            font-size: 1.05rem;
             font-weight: 600;
-            margin-bottom: 16px;
+            text-decoration: none;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 28px rgba(0, 0, 0, 0.28);
+        }
+
+        .cta svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
         }
 
         /* Screenshots */
@@ -263,8 +280,11 @@
     <!-- Hero -->
     <section class="hero">
         <h1>Bbox Sensation Remote Controller</h1>
-        <div class="deprecated-banner">DEPRECATED — Application retirée du Google Play Store</div>
         <p>Transformez votre smartphone Android en telecommande pour votre Bbox TV Bouygues Telecom via WiFi.</p>
+        <a class="cta" href="https://play.google.com/store/apps/details?id=fr.batoucada.bboxsensationremotecontrol" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M3.609 1.814L13.792 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .609-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.199l2.302 2.302-2.302 2.302-2.608-2.302 2.608-2.302zM5.864 2.658L16.8 8.99l-2.302 2.302-8.635-8.635z"/></svg>
+            Disponible sur Google Play
+        </a>
     </section>
 
     <!-- Screenshots -->
@@ -355,7 +375,7 @@
 
     <!-- Footer -->
     <footer>
-        <p>Bbox Sensation Remote Controller &mdash; <a href="https://github.com/batoucada/BboxSensationRemoteControl">Code source sur GitHub</a></p>
+        <p>Bbox Sensation Remote Controller &mdash; <a href="https://github.com/batoucada/BboxSensationRemoteControl">Code source sur GitHub</a> &middot; <a href="privacy/">Politique de confidentialite</a></p>
     </footer>
 
 </body>

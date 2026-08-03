@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Politique de confidentialité — Bbox Sensation Remote Controller</title>
+    <link rel="icon" type="image/png" href="../images/ic_launcher_round_512px.png">
+    <meta name="description" content="Politique de confidentialité de Bbox Sensation Remote Controller, télécommande Android pour la Bbox TV de Bouygues Telecom.">
+    <style>
+        :root {
+            --primary: #3F51B5;
+            --primary-dark: #303F9F;
+            --accent: #FF4081;
+            --text: #333;
+            --text-light: #666;
+            --bg: #fafafa;
+            --card-bg: #fff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
+            color: var(--text);
+            background: var(--bg);
+            line-height: 1.7;
+        }
+
+        /* Hero */
+        .hero {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            text-align: center;
+            padding: 60px 20px 50px;
+        }
+
+        .hero h1 {
+            font-size: 2.2rem;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        /* Content */
+        main {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 50px 20px 60px;
+        }
+
+        main h2 {
+            font-size: 1.25rem;
+            color: var(--primary);
+            margin: 36px 0 12px;
+        }
+
+        main h2:first-of-type {
+            margin-top: 0;
+        }
+
+        main p {
+            color: var(--text-light);
+            margin-bottom: 14px;
+        }
+
+        main ul {
+            color: var(--text-light);
+            margin: 0 0 14px 20px;
+        }
+
+        main li {
+            margin-bottom: 8px;
+        }
+
+        main a {
+            color: var(--primary);
+        }
+
+        code {
+            background: rgba(63, 81, 181, 0.08);
+            color: var(--primary-dark);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary-dark);
+            color: rgba(255, 255, 255, 0.8);
+            text-align: center;
+            padding: 30px 20px;
+            font-size: 0.9rem;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            .hero h1 {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <section class="hero">
+        <h1>Politique de confidentialité</h1>
+        <p>Bbox Sensation Remote Controller</p>
+    </section>
+
+    <main>
+        <p><em>Dernière mise à jour : 3 août 2026</em></p>
+
+        <h2>Résumé</h2>
+        <p>Batoucada (« nous ») développe Bbox Sensation Remote Controller, une application Android
+           qui pilote la Bbox TV de Bouygues Telecom sur votre réseau WiFi local.
+           <strong>L'application ne collecte, ne stocke et ne transmet aucune donnée personnelle.</strong>
+           Nous n'avons aucun serveur et ne recevons rien depuis votre appareil.</p>
+
+        <h2>Données collectées</h2>
+        <p><strong>Aucune.</strong> L'application ne recueille ni votre nom, ni votre adresse e-mail,
+           ni votre position, ni aucun identifiant d'appareil. Elle ne contient ni outil d'analyse,
+           ni rapport de plantage, ni régie publicitaire, ni cookie, et ne nécessite aucun compte.</p>
+
+        <h2>Communication réseau</h2>
+        <p>L'application communique uniquement avec votre Bbox, sur votre réseau local, via le
+           protocole SNMP. Deux autorisations Android sont déclarées à cette fin :</p>
+        <ul>
+            <li><strong><code>INTERNET</code></strong> — nécessaire à Android pour ouvrir une socket
+                réseau. Elle sert exclusivement à joindre votre Bbox sur le réseau local ; aucune
+                donnée n'est envoyée vers Internet.</li>
+            <li><strong><code>ACCESS_NETWORK_STATE</code></strong> — pour vérifier que le téléphone
+                est bien connecté en WiFi avant de tenter une connexion.</li>
+        </ul>
+        <p>La détection automatique parcourt les adresses de votre sous-réseau local afin de trouver
+           la Bbox. Les résultats de cette recherche restent en mémoire pendant l'utilisation et ne
+           sont jamais enregistrés ni transmis.</p>
+
+        <h2>Données stockées sur votre appareil</h2>
+        <p>La seule information conservée est l'adresse IP locale de votre Bbox (par exemple
+           <code>192.168.1.254</code>), enregistrée dans les préférences de l'application pour vous
+           éviter de la ressaisir. Elle ne quitte jamais votre appareil et est supprimée avec
+           l'application ou en effaçant ses données depuis les réglages Android.</p>
+
+        <h2>Services tiers</h2>
+        <p>L'application n'intègre aucun service ni SDK tiers collectant des données. La
+           bibliothèque SNMP utilisée (snmp4j) s'exécute localement et ne communique qu'avec votre
+           Bbox.</p>
+
+        <h2>Confidentialité des enfants</h2>
+        <p>Nous ne collectons sciemment aucune information concernant qui que ce soit, y compris les
+           enfants de moins de 13 ans — puisque nous ne collectons aucune donnée.</p>
+
+        <h2>Modifications de cette politique</h2>
+        <p>Cette politique de confidentialité peut être mise à jour. Toute modification sera publiée
+           sur cette page avec une nouvelle date de mise à jour. Nous vous invitons à la consulter
+           périodiquement.</p>
+
+        <h2>Nous contacter</h2>
+        <p>Pour toute question ou suggestion concernant cette politique de confidentialité,
+           écrivez-nous à <a href="mailto:contact@batoucada.fr">contact@batoucada.fr</a>.</p>
+    </main>
+
+    <footer>
+        <p>Bbox Sensation Remote Controller &mdash; <a href="../">Accueil</a> &middot; <a href="https://github.com/batoucada/BboxSensationRemoteControl">Code source sur GitHub</a></p>
+    </footer>
+
+</body>
+</html>
