@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sketchling — Coloring pages that grow with your child</title>
+  <link rel="icon" type="image/svg+xml" href="icon.svg" />
+  <meta name="description" content="Printable coloring pages for kids aged 2 to 14, each drawing in four levels from toddler to tween. Android, offline, no ads, no data collected." />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/lilita-one@5/index.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/baloo-2@5/index.css">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #2E9E4F;
+      --bg-dark: #1E6B45;
+      --bg-cream: #FFFDF5;
+      --accent: #FFC83D;
+      --accent2: #F2545B;
+      --leaf: #8BCB4F;
+      --text: #22201C;
+      --text-muted: #5E5A50;
+      --line: #EFE8D4;
+      --radius: 18px;
+    }
+
+    body {
+      font-family: 'Baloo 2', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg-cream);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Nav */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 28px;
+      background: rgba(255, 253, 245, 0.9);
+      backdrop-filter: blur(12px);
+      border-bottom: 1.5px solid var(--line);
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      font-family: 'Lilita One', cursive;
+      font-size: 1.3rem; color: var(--text);
+      text-decoration: none;
+    }
+    .nav-logo img { width: 32px; height: 32px; border-radius: 8px; }
+    .nav-logo .wordmark span { color: var(--bg); }
+    .nav-links { display: flex; gap: 24px; }
+    .nav-links a {
+      color: var(--text-muted); text-decoration: none; font-size: 0.95rem; font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--bg); }
+
+    /* Hero */
+    .hero {
+      min-height: 100vh; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; text-align: center;
+      padding: 100px 24px 60px;
+      background: radial-gradient(ellipse at 50% 30%, rgba(46,158,79,0.07) 0%, transparent 60%),
+                  var(--bg-cream);
+    }
+    .hero h1 {
+      font-family: 'Lilita One', cursive;
+      font-size: 3.5rem; letter-spacing: 1px;
+    }
+    .hero .tagline {
+      font-size: 1.2rem; color: var(--text-muted); max-width: 520px;
+      margin: 16px auto 40px;
+    }
+
+    /* Levels demo: the same drawing at the four levels */
+    .levels {
+      display: grid;
+      grid-template-columns: repeat(4, 150px);
+      gap: 14px;
+      margin-bottom: 48px;
+    }
+    .level {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 10px 10px 12px;
+      box-shadow: 0 2px 10px rgba(34,32,28,0.05);
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s;
+    }
+    .level img { width: 100%; aspect-ratio: 3 / 4; object-fit: contain; display: block; }
+    .level .name {
+      display: inline-block; margin-top: 8px;
+      padding: 2px 12px; border-radius: 50px;
+      font-weight: 800; font-size: 0.9rem; color: var(--text);
+    }
+    .level:nth-child(1) .name { background: #FFF1C7; }
+    .level:nth-child(2) .name { background: #E8F5DA; }
+    .level:nth-child(3) .name { background: #D3EEDB; }
+    .level:nth-child(4) .name { background: #CFE3D8; }
+    .level.active { transform: translateY(-8px) scale(1.04); box-shadow: 0 10px 28px rgba(46,158,79,0.18); border-color: var(--bg); }
+
+    .cta {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 32px;
+      background: var(--bg);
+      color: #fff; font-family: 'Lilita One', cursive; font-size: 1.05rem;
+      border-radius: 50px; text-decoration: none;
+      box-shadow: 0 0 0 4px #D3EEDB;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cta:hover { transform: translateY(-2px); box-shadow: 0 0 0 6px #D3EEDB; }
+
+    /* Features */
+    .features {
+      max-width: 900px; margin: 0 auto;
+      padding: 80px 24px;
+    }
+    .features h2 {
+      font-family: 'Lilita One', cursive;
+      font-size: 2rem; color: var(--bg); text-align: center; margin-bottom: 48px;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    .feature-card {
+      background: #fff;
+      border-radius: var(--radius);
+      padding: 24px;
+      border: 1px solid var(--line);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .feature-card:hover { transform: translateY(-3px); box-shadow: 0 4px 16px rgba(46,158,79,0.1); }
+    .feature-card .icon { font-size: 2rem; margin-bottom: 10px; }
+    .feature-card h3 { font-family: 'Lilita One', cursive; font-size: 1.1rem; margin-bottom: 6px; }
+    .feature-card p { font-size: 0.9rem; color: var(--text-muted); }
+
+    /* Footer */
+    footer {
+      text-align: center; padding: 32px 24px;
+      color: var(--text-muted); font-size: 0.85rem;
+      border-top: 1px solid var(--line);
+    }
+    footer a { color: var(--bg); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 700px) {
+      .levels { grid-template-columns: repeat(2, 140px); }
+    }
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 2.4rem; }
+      .hero .tagline { font-size: 1rem; }
+      nav { padding: 12px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="./" class="nav-logo">
+      <img src="icon.svg" alt="Sketchling icon" /><span class="wordmark">Sketch<span>ling</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="privacy/">Privacy</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <h1><span style="color: var(--text);">Sketch</span><!--
+--><span style="color: var(--bg);">ling</span></h1>
+    <p class="tagline">Printable coloring pages that grow with your child. Every drawing comes in four levels, from a toddler's first scribbles to a tween's detailed scene.</p>
+
+    <div class="levels" id="levels">
+      <div class="level"><img src="images/cow-seedling.webp" alt="Cow coloring page, Seedling level" /><span class="name">Seedling · 2–4</span></div>
+      <div class="level"><img src="images/cow-sprout.webp" alt="Cow coloring page, Sprout level" /><span class="name">Sprout · 5–7</span></div>
+      <div class="level"><img src="images/cow-sapling.webp" alt="Cow coloring page, Sapling level" /><span class="name">Sapling · 8–10</span></div>
+      <div class="level"><img src="images/cow-tree.webp" alt="Cow coloring page, Tree level" /><span class="name">Tree · 11+</span></div>
+    </div>
+
+    <a href="https://play.google.com/store/apps/details?id=fr.batoucada.sketchling.app" class="cta">
+      Get it on Google Play &rarr;
+    </a>
+  </section>
+
+  <section class="features" id="features">
+    <h2>Features</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="icon">🌱</div>
+        <h3>Four Levels</h3>
+        <p>The same cow, rocket or unicorn for a 3-year-old and a 10-year-old: Seedling, Sprout, Sapling and Tree.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">🖨️</div>
+        <h3>Print in One Tap</h3>
+        <p>A4 or Letter, sized to fit the page. Or share a drawing to print later.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">🦖</div>
+        <h3>16 Themes</h3>
+        <p>Farm, pets, jungle, dinosaurs, vehicles, space, fairy tales, beach, holidays and more, with new themes in each update.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">🔍</div>
+        <h3>Quick Search</h3>
+        <p>Type "cow" or "vache", "rocket" or "fusée" and find the page right away.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">🌍</div>
+        <h3>20 Languages</h3>
+        <p>Available in 20 languages so families around the world can use it in their own language.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">🔒</div>
+        <h3>Kid-Safe</h3>
+        <p>No ads, no tracking, no in-app purchases, no account, no permissions. 100% offline, and every page is reviewed by a person.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    &copy; 2026 Batoucada. All rights reserved. &middot;
+    <a href="privacy/">Privacy Policy</a>
+  </footer>
+
+  <script>
+    // Highlight the levels one after the other, easy to hard.
+    const levels = document.querySelectorAll('#levels .level');
+    let i = 0;
+    setInterval(() => {
+      levels.forEach((l, j) => l.classList.toggle('active', j === i));
+      i = (i + 1) % levels.length;
+    }, 1400);
+  </script>
+
+</body>
+</html>
